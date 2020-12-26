@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>WebAssembly Demo</title>
+    <link rel="icon" href="favicon.png">
+    <script>
+        function checkpoint(label) {
+            console.log(`${label}: ${(performance.now() - startTime).toFixed(2)} ms (+${(performance.now() - lastTime).toFixed(2)})`);
+            lastTime = performance.now();
+        }
+
+        function benchmark() {
+            let k = 12;
+            for (i = 0; i < 100000000; i++) {
+                k = k * 1.00000001 + 1.00000001;
+            }
+            return k;
+        }
+
+        let startTime = performance.now();
+        let lastTime = startTime;
+
+        var Module = {
+            onRuntimeInitialized: function() {
+                checkpoint("wasm initialized");
+                
+                for (let i = 0; i < 3; i++) {
+                    console.log(Module._benchmark());
+                    checkpoint("wasm benchmark");
+                }
+
+                for (let i = 0; i < 3; i++) {
+                    console.log(benchmark());
+                    checkpoint("js benchmark");
+                }
+            }
+        };
+    </script>
+    <script defer src="hello.js"></script>
+</head>
+<body>
+    <script>checkpoint("page loaded")</script>
+</body>
+</html>

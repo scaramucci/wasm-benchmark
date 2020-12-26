@@ -1,0 +1,14 @@
+{
+  "name": "wasm-demo",
+  "version": "1.0.0",
+  "description": "WebAssembly Demo",
+  "scripts": {
+    "build": "emcc hello.cpp -o hello.js -O2",
+    "start": "light-server -s . -p 8000 --no-reload"
+  },
+  "dependencies": {
+    "light-server": "^2.9.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
